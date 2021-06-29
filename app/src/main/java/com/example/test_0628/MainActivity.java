@@ -1,55 +1,52 @@
 package com.example.test_0628;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.EditText;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
-    //숫자는 임의의 값으로 지정해도 됨
-    public static final int REQUEST_CODE_MENU=101;
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode==REQUEST_CODE_MENU){
-            Toast.makeText(getApplicationContext(),
-                    "onActivityResult 메서드 호출됨.요청코드: "+requestCode+
-                    ", 결과코드 :"+resultCode,Toast.LENGTH_LONG).show();
-
-            if(resultCode==RESULT_OK){
-                String name=data.getStringExtra("name");
-                Toast.makeText(getApplicationContext(),"응답으로 전달된 name:"+name,
-                        Toast.LENGTH_LONG).show();
-            }
-        }
-
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //뷰 객체 참조(이 레이아웃을 실행하겠다)
         setContentView(R.layout.activity_main);
 
-        Button button =findViewById(R.id.button);
+        final EditText editText = findViewById(R.id.editText);
+        Button button=findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(),MenuActivity.class);
-                startActivityForResult(intent,REQUEST_CODE_MENU);
+                //입력상자에 입력된 전화번호 확인
+                String data = editText.getText().toString();
+
+                //전화걸기 화면을 보여줄 인텐트 객체 생성
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(data));
+                //액티비티 띄우기(응답받는 기능까지 하려면 startActivityForResult)
+                startActivity(intent);
             }
         });
 
-    }
+        Button button2=findViewById(R.id.button2);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent();
+                ComponentName name=new ComponentName("org.techtown.samplecallintent",
+                        "org.techtown.samplecallintent.MenuActivity");
+                intent.setComponent(name);
+                startActivityForResult(intent, 101);
+            }
+        });
 
-    public void onButton1Clicked(View v){
-        Toast.makeText(this,"버튼이 눌림",Toast.LENGTH_LONG).show();
     }
 
 
