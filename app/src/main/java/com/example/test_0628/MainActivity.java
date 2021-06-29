@@ -45,12 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent,REQUEST_CODE_MENU);
             }
         });
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText("hello");
-            }
-        });
+
     }
 
     public void onButton1Clicked(View v){
